@@ -1,0 +1,5 @@
+{
+  "code-runner.executorMap": {
+    "cpp": "cd /d \"$dir\" && g++ \"$fileName\" -o \"$fileNameWithoutExt\" -lgdi32 && \"$fileNameWithoutExt\""
+  }
+}
