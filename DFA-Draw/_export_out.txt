@@ -1,0 +1,642 @@
+﻿// --- paste into index.html (replace DFA_EXPORT block) ---
+const FINAL = new Set(["q11", "q12", "q13", "q14", "q19", "q2", "q23", "q27", "q31", "q32", "q33", "q35", "q38", "q39", "q8", "q9"]);
+const RAW_TRANS = [
+  [
+    "q0",
+    "q1",
+    "i"
+  ],
+  [
+    "q0",
+    "q10",
+    ":"
+  ],
+  [
+    "q0",
+    "q3",
+    "t"
+  ],
+  [
+    "q0",
+    "q4",
+    "e"
+  ],
+  [
+    "q0",
+    "q5",
+    "u"
+  ],
+  [
+    "q0",
+    "q6",
+    "r"
+  ],
+  [
+    "q0",
+    "q7",
+    "w"
+  ],
+  [
+    "q0",
+    "qd",
+    "(,),*,+,-,/,;,<,=,D,L,S,a,d,f,h,l,n,p,s,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q1",
+    "q2",
+    "f"
+  ],
+  [
+    "q1",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q10",
+    "qd",
+    "*all"
+  ],
+  [
+    "q11",
+    "qd",
+    "*all"
+  ],
+  [
+    "q12",
+    "qd",
+    "*all"
+  ],
+  [
+    "q13",
+    "q20",
+    "}"
+  ],
+  [
+    "q13",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,t,u,w,{,Any Characters,Digit,Letter"
+  ],
+  [
+    "q14",
+    "qd",
+    "*all"
+  ],
+  [
+    "q15",
+    "q21",
+    "e"
+  ],
+  [
+    "q15",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q16",
+    "q21",
+    "e"
+  ],
+  [
+    "q16",
+    "q22",
+    "S"
+  ],
+  [
+    "q16",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q17",
+    "q24",
+    "p"
+  ],
+  [
+    "q17",
+    "q25",
+    "a"
+  ],
+  [
+    "q17",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,d,e,f,h,i,l,n,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q18",
+    "q26",
+    "i"
+  ],
+  [
+    "q18",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q19",
+    "qd",
+    "*all"
+  ],
+  [
+    "q2",
+    "qd",
+    "*all"
+  ],
+  [
+    "q20",
+    "q20",
+    "Any Characters"
+  ],
+  [
+    "q20",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,t,u,w,{,},Digit,Letter"
+  ],
+  [
+    "q21",
+    "q8",
+    "n"
+  ],
+  [
+    "q21",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q22",
+    "qd",
+    "*all"
+  ],
+  [
+    "q23",
+    "qd",
+    "*all"
+  ],
+  [
+    "q24",
+    "q34",
+    "e"
+  ],
+  [
+    "q24",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q25",
+    "q19",
+    "d"
+  ],
+  [
+    "q25",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q26",
+    "q36",
+    "t"
+  ],
+  [
+    "q26",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q27",
+    "qd",
+    "*all"
+  ],
+  [
+    "q28",
+    "q29",
+    "t"
+  ],
+  [
+    "q28",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q29",
+    "q30",
+    "i"
+  ],
+  [
+    "q29",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q3",
+    "q15",
+    "h"
+  ],
+  [
+    "q3",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q30",
+    "q14",
+    "l"
+  ],
+  [
+    "q30",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q31",
+    "qd",
+    "*all"
+  ],
+  [
+    "q32",
+    "qd",
+    "*all"
+  ],
+  [
+    "q33",
+    "qd",
+    "*all"
+  ],
+  [
+    "q34",
+    "q37",
+    "a"
+  ],
+  [
+    "q34",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,d,e,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q35",
+    "qd",
+    "*all"
+  ],
+  [
+    "q36",
+    "q23",
+    "e"
+  ],
+  [
+    "q36",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q37",
+    "q12",
+    "t"
+  ],
+  [
+    "q37",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q38",
+    "qd",
+    "*all"
+  ],
+  [
+    "q39",
+    "qd",
+    "*all"
+  ],
+  [
+    "q4",
+    "q40",
+    "l"
+  ],
+  [
+    "q4",
+    "q42",
+    "n"
+  ],
+  [
+    "q4",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q40",
+    "q41",
+    "s"
+  ],
+  [
+    "q40",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q41",
+    "q9",
+    "e"
+  ],
+  [
+    "q41",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q42",
+    "q11",
+    "d"
+  ],
+  [
+    "q42",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q5",
+    "q28",
+    "n"
+  ],
+  [
+    "q5",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q6",
+    "q17",
+    "e"
+  ],
+  [
+    "q6",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q7",
+    "q18",
+    "r"
+  ],
+  [
+    "q7",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q8",
+    "qd",
+    "*all"
+  ],
+  [
+    "q9",
+    "qd",
+    "*all"
+  ]
+];
+const KEYWORD_PHASES = [
+  {
+    "label": "IF",
+    "word": "if",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q1",
+        "ch": "i"
+      },
+      {
+        "state": "q2",
+        "ch": "f"
+      }
+    ],
+    "last": "q2",
+    "missing": null
+  },
+  {
+    "label": "THEN",
+    "word": "then",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q3",
+        "ch": "t"
+      },
+      {
+        "state": "q15",
+        "ch": "h"
+      },
+      {
+        "state": "q21",
+        "ch": "e"
+      },
+      {
+        "state": "q8",
+        "ch": "n"
+      }
+    ],
+    "last": "q8",
+    "missing": null
+  },
+  {
+    "label": "ELSE",
+    "word": "else",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q4",
+        "ch": "e"
+      },
+      {
+        "state": "q40",
+        "ch": "l"
+      },
+      {
+        "state": "q41",
+        "ch": "s"
+      },
+      {
+        "state": "q9",
+        "ch": "e"
+      }
+    ],
+    "last": "q9",
+    "missing": null
+  },
+  {
+    "label": "END",
+    "word": "end",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q4",
+        "ch": "e"
+      },
+      {
+        "state": "q42",
+        "ch": "n"
+      },
+      {
+        "state": "q11",
+        "ch": "d"
+      }
+    ],
+    "last": "q11",
+    "missing": null
+  },
+  {
+    "label": "REPEAT",
+    "word": "repeat",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q6",
+        "ch": "r"
+      },
+      {
+        "state": "q17",
+        "ch": "e"
+      },
+      {
+        "state": "q24",
+        "ch": "p"
+      },
+      {
+        "state": "q34",
+        "ch": "e"
+      },
+      {
+        "state": "q37",
+        "ch": "a"
+      },
+      {
+        "state": "q12",
+        "ch": "t"
+      }
+    ],
+    "last": "q12",
+    "missing": null
+  },
+  {
+    "label": "UNTIL",
+    "word": "until",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q5",
+        "ch": "u"
+      },
+      {
+        "state": "q28",
+        "ch": "n"
+      },
+      {
+        "state": "q29",
+        "ch": "t"
+      },
+      {
+        "state": "q30",
+        "ch": "i"
+      },
+      {
+        "state": "q14",
+        "ch": "l"
+      }
+    ],
+    "last": "q14",
+    "missing": null
+  },
+  {
+    "label": "READ",
+    "word": "read",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q6",
+        "ch": "r"
+      },
+      {
+        "state": "q17",
+        "ch": "e"
+      },
+      {
+        "state": "q25",
+        "ch": "a"
+      },
+      {
+        "state": "q19",
+        "ch": "d"
+      }
+    ],
+    "last": "q19",
+    "missing": null
+  },
+  {
+    "label": "WRITE",
+    "word": "write",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q7",
+        "ch": "w"
+      },
+      {
+        "state": "q18",
+        "ch": "r"
+      },
+      {
+        "state": "q26",
+        "ch": "i"
+      },
+      {
+        "state": "q36",
+        "ch": "t"
+      },
+      {
+        "state": "q23",
+        "ch": "e"
+      }
+    ],
+    "last": "q23",
+    "missing": null
+  }
+];
+const UNREACHABLE_FINALS = ["q13", "q27", "q31", "q32", "q33", "q35", "q38", "q39"];
+// --- end ---

@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DFA State Diagram</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d0f14;
+    --surface:   #141820;
+    --panel:     #1a2030;
+    --border:    #2a3348;
+    --border2:   #3a4a68;
+    --text:      #e2e8f4;
+    --muted:     #7a8aaa;
+    --accent:    #4f8ef7;
+    --accent2:   #7c5af7;
+    --orange:    #f97316;
+    --green:     #22c55e;
+    --red:       #ef4444;
+    --purple:    #a855f7;
+
+    --col-start-fill:   #0d2e1a;
+    --col-start-stroke: #22c55e;
+    --col-start-text:   #86efac;
+
+    --col-final-fill:   #1e0d38;
+    --col-final-stroke: #a855f7;
+    --col-final-text:   #d8b4fe;
+
+    --col-dead-fill:    #2a0d0d;
+    --col-dead-stroke:  #ef4444;
+    --col-dead-text:    #fca5a5;
+
+    --col-reg-fill:     #0a1a2e;
+    --col-reg-stroke:   #3b82f6;
+    --col-reg-text:     #93c5fd;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .logo-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tb-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+    border-right: 1px solid var(--border);
+  }
+  .tb-group:last-child { border-right: none; }
+
+  .tb-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .tb-btn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    background: var(--panel);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .tb-btn:hover { background: var(--border); border-color: var(--accent); color: var(--accent); }
+
+  .tb-btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .tb-btn.primary:hover { background: #3a7de0; }
+
+  .zoom-wrap {
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  input[type=range] {
+    width: 100px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .zoom-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    min-width: 38px;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 8px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .leg-item {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .leg-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid;
+    flex-shrink: 0;
+  }
+
+  .leg-ring {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--purple);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .leg-ring::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    border: 1px solid var(--purple);
+  }
+
+  /* ── CANVAS AREA ── */
+  #svg-scroll {
+    width: 100%;
+    overflow: auto;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(79,142,247,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 70%, rgba(124,90,247,0.04) 0%, transparent 60%),
+      var(--bg);
+    /* Dot grid */
+    background-image:
+      radial-gradient(ellipse at 20% 30%, rgba(79,142,247,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 70%, rgba(124,90,247,0.04) 0%, transparent 60%),
+      radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: auto, auto, 28px 28px;
+  }
+
+  svg { display: block; cursor: grab; }
+  svg:active { cursor: grabbing; }
+
+  /* ── INFO BAR ── */
+  #info {
+    padding: 10px 24px;
+    font-size: 12.5px;
+    color: var(--muted);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.01em;
+  }
+
+  code {
+    background: var(--panel);
+    border: 1px solid var(--border2);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+  }
+
+  .badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .badge-start  { background: rgba(34,197,94,0.15);  color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+  .badge-accept { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+  .badge-dead   { background: rgba(239,68,68,0.15);  color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+
+  .stats {
+    display: flex; gap: 16px; margin-left: auto;
+  }
+  .stat {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .stat strong { color: var(--text); font-weight: 600; }
+
+  /* ── KEYWORD PHASES ── */
+  .phase-panel {
+    padding: 10px 24px 14px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  .phase-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .phase-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .phase-sub {
+    font-size: 11px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.35;
+  }
+  .phase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+  }
+  .phase-card {
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 8px 10px;
+    background: var(--surface);
+    font-size: 11.5px;
+  }
+  .phase-card.pass { border-color: rgba(34,197,94,0.45); }
+  .phase-card.fail { border-color: rgba(239,68,68,0.35); }
+  .phase-row1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .phase-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--accent);
+  }
+  .phase-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+  .phase-badge.ok { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.35); }
+  .phase-badge.no { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .phase-chain {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--muted);
+    line-height: 1.45;
+    word-break: break-word;
+  }
+  .phase-chain strong { color: var(--text); font-weight: 600; }
+  .phase-detail {
+    margin-top: 4px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .phase-foot {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--orange);
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">⬡</div>
+    <div>
+      <div class="logo-text">DFA Visualizer</div>
+      <div class="logo-sub">Deterministic Finite Automaton</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="tb-group">
+      <span class="tb-label">Zoom</span>
+      <div class="zoom-wrap">
+        <button class="tb-btn" onclick="setZoom(zoom-10)">−</button>
+        <input type="range" min="25" max="160" value="65" id="zr" oninput="setZoom(+this.value)">
+        <button class="tb-btn" onclick="setZoom(zoom+10)">+</button>
+        <span class="zoom-val" id="zval">65%</span>
+      </div>
+    </div>
+    <div class="tb-group">
+      <button class="tb-btn" onclick="fitView()">Fit View</button>
+      <button class="tb-btn" onclick="clearSel()">Clear</button>
+    </div>
+    <div class="tb-group">
+      <button class="tb-btn primary" onclick="toggleDeadEdges()">Toggle Dead Edges</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">States <strong id="state-count">—</strong></div>
+    <div class="stat">Final <strong id="final-count">16</strong></div>
+    <div class="stat">Transitions <strong id="trans-count">—</strong></div>
+  </div>
+</header>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="leg-item">
+    <div class="leg-dot" style="background:#0d2e1a;border-color:#22c55e"></div>
+    Start state (q0)
+  </div>
+  <div class="leg-item">
+    <div class="leg-dot" style="background:#0a1a2e;border-color:#3b82f6"></div>
+    Intermediate state
+  </div>
+  <div class="leg-item">
+    <div class="leg-ring"></div>
+    Final / Accept state (double ring)
+  </div>
+  <div class="leg-item">
+    <div class="leg-dot" style="background:#2a0d0d;border-color:#ef4444"></div>
+    Dead trap state (qd)
+  </div>
+  <div class="leg-item" style="margin-left:auto;font-size:11px;color:var(--muted)">
+    Click any state · Scroll to pan · Drag canvas
+  </div>
+</div>
+
+<!-- KEYWORD PHASES (from DFA_States.xlsx) -->
+<div class="phase-panel" id="phase-panel">
+  <div class="phase-head">
+    <span class="phase-title">Keyword phases</span>
+    <span class="phase-sub" id="phase-sheet-note">Traced on single-character columns; final = accept per sheet</span>
+  </div>
+  <div class="phase-grid" id="phase-grid"></div>
+  <div class="phase-foot" id="phase-foot"></div>
+</div>
+
+<!-- SVG CANVAS -->
+<div id="svg-scroll">
+  <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+
+<!-- INFO BAR -->
+<div id="info">
+  <span>🖱 Click any state node to inspect its transitions</span>
+</div>
+
+<script>
+// ════════════════════════════════════════════════
+//  DATA
+// ════════════════════════════════════════════════
+const FINAL = new Set(["q11", "q12", "q13", "q14", "q19", "q2", "q23", "q27", "q31", "q32", "q33", "q35", "q38", "q39", "q8", "q9"]);
+const START = 'q0', DEAD = 'qd';
+const RAW_TRANS = [
+  [
+    "q0",
+    "q1",
+    "i"
+  ],
+  [
+    "q0",
+    "q10",
+    ":"
+  ],
+  [
+    "q0",
+    "q3",
+    "t"
+  ],
+  [
+    "q0",
+    "q4",
+    "e"
+  ],
+  [
+    "q0",
+    "q5",
+    "u"
+  ],
+  [
+    "q0",
+    "q6",
+    "r"
+  ],
+  [
+    "q0",
+    "q7",
+    "w"
+  ],
+  [
+    "q0",
+    "qd",
+    "(,),*,+,-,/,;,<,=,D,L,S,a,d,f,h,l,n,p,s,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q1",
+    "q2",
+    "f"
+  ],
+  [
+    "q1",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q10",
+    "qd",
+    "*all"
+  ],
+  [
+    "q11",
+    "qd",
+    "*all"
+  ],
+  [
+    "q12",
+    "qd",
+    "*all"
+  ],
+  [
+    "q13",
+    "q20",
+    "}"
+  ],
+  [
+    "q13",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,t,u,w,{,Any Characters,Digit,Letter"
+  ],
+  [
+    "q14",
+    "qd",
+    "*all"
+  ],
+  [
+    "q15",
+    "q21",
+    "e"
+  ],
+  [
+    "q15",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q16",
+    "q21",
+    "e"
+  ],
+  [
+    "q16",
+    "q22",
+    "S"
+  ],
+  [
+    "q16",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q17",
+    "q24",
+    "p"
+  ],
+  [
+    "q17",
+    "q25",
+    "a"
+  ],
+  [
+    "q17",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,d,e,f,h,i,l,n,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q18",
+    "q26",
+    "i"
+  ],
+  [
+    "q18",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q19",
+    "qd",
+    "*all"
+  ],
+  [
+    "q2",
+    "qd",
+    "*all"
+  ],
+  [
+    "q20",
+    "q20",
+    "Any Characters"
+  ],
+  [
+    "q20",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,t,u,w,{,},Digit,Letter"
+  ],
+  [
+    "q21",
+    "q8",
+    "n"
+  ],
+  [
+    "q21",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q22",
+    "qd",
+    "*all"
+  ],
+  [
+    "q23",
+    "qd",
+    "*all"
+  ],
+  [
+    "q24",
+    "q34",
+    "e"
+  ],
+  [
+    "q24",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q25",
+    "q19",
+    "d"
+  ],
+  [
+    "q25",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q26",
+    "q36",
+    "t"
+  ],
+  [
+    "q26",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q27",
+    "qd",
+    "*all"
+  ],
+  [
+    "q28",
+    "q29",
+    "t"
+  ],
+  [
+    "q28",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q29",
+    "q30",
+    "i"
+  ],
+  [
+    "q29",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q3",
+    "q15",
+    "h"
+  ],
+  [
+    "q3",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q30",
+    "q14",
+    "l"
+  ],
+  [
+    "q30",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q31",
+    "qd",
+    "*all"
+  ],
+  [
+    "q32",
+    "qd",
+    "*all"
+  ],
+  [
+    "q33",
+    "qd",
+    "*all"
+  ],
+  [
+    "q34",
+    "q37",
+    "a"
+  ],
+  [
+    "q34",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,d,e,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q35",
+    "qd",
+    "*all"
+  ],
+  [
+    "q36",
+    "q23",
+    "e"
+  ],
+  [
+    "q36",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q37",
+    "q12",
+    "t"
+  ],
+  [
+    "q37",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q38",
+    "qd",
+    "*all"
+  ],
+  [
+    "q39",
+    "qd",
+    "*all"
+  ],
+  [
+    "q4",
+    "q40",
+    "l"
+  ],
+  [
+    "q4",
+    "q42",
+    "n"
+  ],
+  [
+    "q4",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q40",
+    "q41",
+    "s"
+  ],
+  [
+    "q40",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q41",
+    "q9",
+    "e"
+  ],
+  [
+    "q41",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q42",
+    "q11",
+    "d"
+  ],
+  [
+    "q42",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q5",
+    "q28",
+    "n"
+  ],
+  [
+    "q5",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q6",
+    "q17",
+    "e"
+  ],
+  [
+    "q6",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q7",
+    "q18",
+    "r"
+  ],
+  [
+    "q7",
+    "qd",
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,s,t,u,w,{,},Any Characters,Digit,Letter"
+  ],
+  [
+    "q8",
+    "qd",
+    "*all"
+  ],
+  [
+    "q9",
+    "qd",
+    "*all"
+  ]
+];
+const KEYWORD_PHASES = [
+  {
+    "label": "IF",
+    "word": "if",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q1",
+        "ch": "i"
+      },
+      {
+        "state": "q2",
+        "ch": "f"
+      }
+    ],
+    "last": "q2",
+    "missing": null
+  },
+  {
+    "label": "THEN",
+    "word": "then",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q3",
+        "ch": "t"
+      },
+      {
+        "state": "q15",
+        "ch": "h"
+      },
+      {
+        "state": "q21",
+        "ch": "e"
+      },
+      {
+        "state": "q8",
+        "ch": "n"
+      }
+    ],
+    "last": "q8",
+    "missing": null
+  },
+  {
+    "label": "ELSE",
+    "word": "else",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q4",
+        "ch": "e"
+      },
+      {
+        "state": "q40",
+        "ch": "l"
+      },
+      {
+        "state": "q41",
+        "ch": "s"
+      },
+      {
+        "state": "q9",
+        "ch": "e"
+      }
+    ],
+    "last": "q9",
+    "missing": null
+  },
+  {
+    "label": "END",
+    "word": "end",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q4",
+        "ch": "e"
+      },
+      {
+        "state": "q42",
+        "ch": "n"
+      },
+      {
+        "state": "q11",
+        "ch": "d"
+      }
+    ],
+    "last": "q11",
+    "missing": null
+  },
+  {
+    "label": "REPEAT",
+    "word": "repeat",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q6",
+        "ch": "r"
+      },
+      {
+        "state": "q17",
+        "ch": "e"
+      },
+      {
+        "state": "q24",
+        "ch": "p"
+      },
+      {
+        "state": "q34",
+        "ch": "e"
+      },
+      {
+        "state": "q37",
+        "ch": "a"
+      },
+      {
+        "state": "q12",
+        "ch": "t"
+      }
+    ],
+    "last": "q12",
+    "missing": null
+  },
+  {
+    "label": "UNTIL",
+    "word": "until",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q5",
+        "ch": "u"
+      },
+      {
+        "state": "q28",
+        "ch": "n"
+      },
+      {
+        "state": "q29",
+        "ch": "t"
+      },
+      {
+        "state": "q30",
+        "ch": "i"
+      },
+      {
+        "state": "q14",
+        "ch": "l"
+      }
+    ],
+    "last": "q14",
+    "missing": null
+  },
+  {
+    "label": "READ",
+    "word": "read",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q6",
+        "ch": "r"
+      },
+      {
+        "state": "q17",
+        "ch": "e"
+      },
+      {
+        "state": "q25",
+        "ch": "a"
+      },
+      {
+        "state": "q19",
+        "ch": "d"
+      }
+    ],
+    "last": "q19",
+    "missing": null
+  },
+  {
+    "label": "WRITE",
+    "word": "write",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q7",
+        "ch": "w"
+      },
+      {
+        "state": "q18",
+        "ch": "r"
+      },
+      {
+        "state": "q26",
+        "ch": "i"
+      },
+      {
+        "state": "q36",
+        "ch": "t"
+      },
+      {
+        "state": "q23",
+        "ch": "e"
+      }
+    ],
+    "last": "q23",
+    "missing": null
+  }
+];
+const UNREACHABLE_FINALS = ["q13", "q27", "q31", "q32", "q33", "q35", "q38", "q39"];
+
+// ════════════════════════════════════════════════
+//  LAYOUT  (hand-placed; keep in sync with sheet states)
+// ════════════════════════════════════════════════
+const POS = {
+  // ── Start ──
+  q0:  [560,  80],
+
+  // ── q0 → i ──
+  q1:  [100, 240],
+  q2:  [100, 400],   // final — keyword IF (i → f) per sheet
+
+  // ── q0 → t → q3 → h → q15 → e → q21 ──
+  q3:  [300, 240],
+  q15: [300, 400],
+  q21: [180, 560],
+  q16: [380, 560],  // (standalone state with q16→e→q21 and q16→S→q22)
+  q22: [380, 720],
+
+  // ── q0 → e → q4 ──
+  q4:  [560, 240],
+  // else (q4→l→q40→s→q41→e→q9) / end (q4→n→q42→d→q11)
+  q40: [480, 300],
+  q41: [480, 440],
+  q42: [640, 300],
+
+  // ── q0 → : → q10 ──
+  q10: [560, 400],
+
+  // ── q0 → u → q5 → n → q28 → t → q29 → i → q30 ──
+  q5:  [740, 240],
+  q28: [740, 400],
+  q29: [740, 560],
+  q30: [740, 720],
+
+  // ── q0 → r → q6 → e → q17 ──
+  q6:  [940, 240],
+  q17: [940, 400],
+  q24: [860, 560],   // q17→p→q24→e→q34→a→q37
+  q34: [860, 720],
+  q37: [860, 880],
+  q25: [1020,560],   // q17→a→q25
+
+  // ── q0 → w → q7 → r → q18 → i → q26 → t → q36 ──
+  q7:  [1140,240],
+  q18: [1140,400],
+  q26: [1140,560],
+  q36: [1140,720],
+
+  // ── q13 → } → q20 (q20 self-loop) ──
+  q13: [100, 720],   // final
+  q20: [100, 880],
+
+  // ── Dead state ──
+  qd:  [1400,500],
+
+  // ── Isolated final states ──
+  q8:  [1660,160],
+  q9:  [1800,160],
+  q11: [1660,320],
+  q12: [1800,320],
+  q14: [1940,160],
+  q19: [1940,320],
+  q23: [1660,480],
+  q27: [1800,480],
+  q31: [1660,640],
+  q32: [1800,640],
+  q33: [1940,480],
+  q35: [1940,640],
+  q38: [1660,800],
+  q39: [1800,800],
+};
+
+const ALL_STATES = Object.keys(POS);
+const R = 28;
+let selState = null;
+let zoom = 0.65;
+let showDeadEdges = false;
+
+// ════════════════════════════════════════════════
+//  SVG BUILD
+// ════════════════════════════════════════════════
+const svgEl = document.getElementById('svg');
+const NS = 'http://www.w3.org/2000/svg';
+
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for(const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  if(parent) parent.appendChild(e);
+  return e;
+}
+
+function stateStyle(s) {
+  if(s === START) return { fill:'#0d2e1a', stroke:'#22c55e', text:'#86efac', glow:'rgba(34,197,94,0.35)' };
+  if(s === DEAD)  return { fill:'#2a0d0d', stroke:'#ef4444', text:'#fca5a5', glow:'rgba(239,68,68,0.3)' };
+  if(FINAL.has(s)) return { fill:'#1e0d38', stroke:'#a855f7', text:'#d8b4fe', glow:'rgba(168,85,247,0.35)' };
+  return { fill:'#0a1a2e', stroke:'#3b82f6', text:'#93c5fd', glow:'rgba(59,130,246,0.3)' };
+}
+
+function edgeStyle(from, to) {
+  const isHi = selState && (from === selState || to === selState);
+  if(isHi) return { color:'#f97316', width:'2.2', dash:'none', marker:'hi' };
+  if(to === DEAD) return { color:'#2a3a55', width:'1', dash:'5,4', marker:'dead' };
+  return { color:'#3a5278', width:'1.4', dash:'none', marker:'normal' };
+}
+
+let edgeLayer, labelLayer, nodeLayer;
+
+function renderKeywordPhases() {
+  const grid = document.getElementById('phase-grid');
+  const foot = document.getElementById('phase-foot');
+  const passN = KEYWORD_PHASES.filter(p => p.pass).length;
+  grid.innerHTML = KEYWORD_PHASES.map(p => {
+    const chain = p.steps.map((st, i) => {
+      if (i === 0) return `<strong>${st.state}</strong>`;
+      return ` → <span style="color:var(--muted)">${st.ch}</span> → <strong>${st.state}</strong>`;
+    }).join('');
+    let detail = '';
+    if (p.reason === 'no_transition') detail = `Missing transition on <code>${p.missing}</code> from <strong>${p.last}</strong>.`;
+    else if (p.reason === 'not_final') detail = `Ended in <strong>${p.last}</strong> (not marked final in sheet).`;
+    else if (p.reason === 'accept') detail = `Accept state <strong>${p.last}</strong> (final per sheet).`;
+    const cls = p.pass ? 'pass' : 'fail';
+    const badge = p.pass
+      ? '<span class="phase-badge ok">PASS · FINAL</span>'
+      : '<span class="phase-badge no">FAIL</span>';
+    return `<div class="phase-card ${cls}"><div class="phase-row1"><span class="phase-name">${p.label} <span style="color:var(--muted);font-weight:500">(${p.word})</span></span>${badge}</div><div class="phase-chain">${chain}</div><div class="phase-detail">${detail}</div></div>`;
+  }).join('');
+  const unreachable = UNREACHABLE_FINALS.length ? UNREACHABLE_FINALS.join(', ') : 'none';
+  foot.innerHTML = `Phases passing: <strong>${passN}</strong> / ${KEYWORD_PHASES.length}. Accept states still unreachable from <code>q0</code>: <code>${unreachable}</code>. Re-sync: <code>tools/export_dfa_from_xlsx.py</code> → <code>tools/patch_index_html.py</code>.`;
+}
+
+function buildSVG() {
+  while(svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+
+  const xs = Object.values(POS).map(p=>p[0]);
+  const ys = Object.values(POS).map(p=>p[1]);
+  const W = Math.max(...xs)+120, H = Math.max(...ys)+120;
+  svgEl.setAttribute('width', W*zoom);
+  svgEl.setAttribute('height', H*zoom);
+  svgEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+  // ── Defs ──
+  const defs = el('defs',{},svgEl);
+
+  // Filters for node glow
+  function mkGlow(id, color) {
+    const f = el('filter',{id,x:'-40%',y:'-40%',width:'180%',height:'180%'},defs);
+    const fe = el('feDropShadow',{dx:'0',dy:'0',stdDeviation:'6','flood-color':color,'flood-opacity':'0.8'},f);
+  }
+  mkGlow('glow-start','#22c55e');
+  mkGlow('glow-final','#a855f7');
+  mkGlow('glow-dead','#ef4444');
+  mkGlow('glow-reg','#3b82f6');
+  mkGlow('glow-sel','#f97316');
+
+  // Arrow markers
+  function mkMarker(id, color) {
+    const m = el('marker',{id,viewBox:'0 0 10 10',refX:'8',refY:'5',
+      markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'},defs);
+    el('path',{d:'M1 2L8 5L1 8',fill:'none',stroke:color,'stroke-width':'1.8',
+      'stroke-linecap':'round','stroke-linejoin':'round'},m);
+  }
+  mkMarker('arr-normal','#3a5278');
+  mkMarker('arr-dead','#2a3a55');
+  mkMarker('arr-hi','#f97316');
+
+  // Background
+  el('rect',{x:0,y:0,width:W,height:H,fill:'#0d0f14'},svgEl);
+
+  edgeLayer  = el('g',{id:'edges'},svgEl);
+  labelLayer = el('g',{id:'elabels'},svgEl);
+  nodeLayer  = el('g',{id:'nodes'},svgEl);
+
+  drawEdges();
+  drawNodes();
+
+  document.getElementById('state-count').textContent = ALL_STATES.length;
+  document.getElementById('final-count').textContent = FINAL.size;
+  document.getElementById('trans-count').textContent = RAW_TRANS.length;
+}
+
+function bezMid(sx,sy,cpx,cpy,ex,ey,t=0.5){
+  return [
+    (1-t)*(1-t)*sx+2*(1-t)*t*cpx+t*t*ex,
+    (1-t)*(1-t)*sy+2*(1-t)*t*cpy+t*t*ey
+  ];
+}
+
+function drawEdges() {
+  while(edgeLayer.firstChild) edgeLayer.removeChild(edgeLayer.firstChild);
+  while(labelLayer.firstChild) labelLayer.removeChild(labelLayer.firstChild);
+
+  // Group by from→to
+  const grouped = {};
+  for(const [from,to,lbl] of RAW_TRANS) {
+    if(!POS[from]||!POS[to]) continue;
+    if(!showDeadEdges && to === DEAD) continue;
+    const key = `${from}→${to}`;
+    if(!grouped[key]) grouped[key]={from,to,labels:[]};
+    grouped[key].labels.push(lbl);
+  }
+
+  for(const {from, to, labels} of Object.values(grouped)) {
+    const lbl = labels.join(' / ');
+    const [x1,y1]=POS[from], [x2,y2]=POS[to];
+    const es = edgeStyle(from, to);
+    const mid = `url(#arr-${es.marker})`;
+    const dashAttr = es.dash === 'none' ? '' : es.dash;
+
+    if(from === to) {
+      // Self-loop above node
+      const lx=x1, ly=y1-R;
+      const d = `M${lx-14} ${ly+3} C${lx-50} ${ly-70} ${lx+50} ${ly-70} ${lx+14} ${ly+3}`;
+      el('path',{d,fill:'none',stroke:es.color,'stroke-width':es.width,'stroke-dasharray':dashAttr,'marker-end':mid},edgeLayer);
+      // label
+      const tx=lx, ty=ly-62;
+      const tw = Math.max(lbl.length*6.5+10, 30);
+      el('rect',{x:tx-tw/2,y:ty-10,width:tw,height:16,rx:5,fill:'#141820',stroke:es.color,'stroke-width':'0.5'},labelLayer);
+      const t=el('text',{x:tx,y:ty+2,'text-anchor':'middle','font-size':'10','font-family':'JetBrains Mono, monospace','fill':es.color,'font-weight':'600'},labelLayer);
+      t.textContent=lbl;
+    } else {
+      const dx=x2-x1, dy=y2-y1, dist=Math.sqrt(dx*dx+dy*dy);
+      const nx=dx/dist, ny=dy/dist;
+      const sx=x1+nx*R, sy=y1+ny*R;
+      const ex=x2-nx*R, ey=y2-ny*R;
+      const perp = 32;
+      const cpx=(sx+ex)/2 - ny*perp;
+      const cpy=(sy+ey)/2 + nx*perp;
+      el('path',{d:`M${sx} ${sy} Q${cpx} ${cpy} ${ex} ${ey}`,fill:'none',
+        stroke:es.color,'stroke-width':es.width,'stroke-dasharray':dashAttr,'marker-end':mid},edgeLayer);
+      const [mx,my]=bezMid(sx,sy,cpx,cpy,ex,ey,0.5);
+      const tw = Math.max(lbl.length*5.8+12, 20);
+      if(lbl!=='*all'){
+        el('rect',{x:mx-tw/2,y:my-9,width:tw,height:16,rx:4,fill:'#141820',stroke:es.color,'stroke-width':'0.5','opacity':'0.95'},labelLayer);
+        const t=el('text',{x:mx,y:my+3,'text-anchor':'middle','font-size':'10',
+          'font-family':'JetBrains Mono, monospace','fill':es.color,
+          'font-weight': es.marker==='hi'?'700':'500'},labelLayer);
+        t.textContent=lbl;
+      }
+    }
+  }
+}
+
+function drawNodes() {
+  while(nodeLayer.firstChild) nodeLayer.removeChild(nodeLayer.firstChild);
+
+  for(const s of ALL_STATES) {
+    if(!POS[s]) continue;
+    const [x,y] = POS[s];
+    const c = stateStyle(s);
+    const isSel = s===selState;
+    const glowId = isSel ? 'glow-sel' : s===START ? 'glow-start' : s===DEAD ? 'glow-dead' : FINAL.has(s) ? 'glow-final' : 'glow-reg';
+    const g = el('g',{class:'node-g',transform:`translate(${x},${y})`,'data-state':s},nodeLayer);
+    g.style.cursor='pointer';
+    g.onclick = ()=>{ selState=selState===s?null:s; rebuildSel(); updateInfo(); };
+
+    // Glow halo
+    el('circle',{r:R+10,fill:c.glow,filter:`url(#${glowId})`,opacity:isSel?'1':'0.5'},g);
+
+    // Main circle
+    el('circle',{r:R,fill:c.fill,stroke: isSel?'#f97316':c.stroke,'stroke-width':isSel?'2.5':'2'},g);
+
+    // Double ring for final states
+    if(FINAL.has(s)){
+      el('circle',{r:R-7,fill:'none',stroke: isSel?'#f97316':c.stroke,'stroke-width':'1.5'},g);
+    }
+
+    // State label
+    const fontSize = s.length > 3 ? '10' : s.length > 2 ? '11' : '13';
+    el('text',{x:'0',y:'1','text-anchor':'middle','dominant-baseline':'middle',
+      'font-size':fontSize,'font-family':'JetBrains Mono, monospace',
+      'font-weight':'700','fill':isSel?'#f97316':c.text,'letter-spacing':'-0.03em'},g).textContent=s;
+
+    // Start arrow
+    if(s===START){
+      const ag = el('g',{},nodeLayer);
+      el('line',{x1:x-R-44,y1:y,x2:x-R-2,y2:y,stroke:'#22c55e','stroke-width':'2.2','marker-end':'url(#arr-normal)'},ag);
+      el('rect',{x:x-R-74,y:y-18,width:32,height:14,rx:4,fill:'rgba(34,197,94,0.12)','stroke':'rgba(34,197,94,0.3)','stroke-width':'0.5'},ag);
+      el('text',{x:x-R-58,y:y-8,'text-anchor':'middle','font-size':'9.5','font-family':'JetBrains Mono, monospace','fill':'#22c55e','font-weight':'700'},ag).textContent='start';
+    }
+  }
+}
+
+function rebuildSel() {
+  drawEdges();
+  drawNodes();
+}
+
+// ════════════════════════════════════════════════
+//  CONTROLS
+// ════════════════════════════════════════════════
+function setZoom(v) {
+  zoom = Math.max(0.25, Math.min(1.6, v/100));
+  document.getElementById('zr').value = Math.round(zoom*100);
+  document.getElementById('zval').textContent = Math.round(zoom*100)+'%';
+  buildSVG();
+}
+
+function fitView() { setZoom(65); }
+function clearSel() { selState=null; rebuildSel(); updateInfo(); }
+function toggleDeadEdges() { showDeadEdges=!showDeadEdges; buildSVG(); }
+
+function updateInfo() {
+  const div = document.getElementById('info');
+  if(!selState){ div.innerHTML='<span style="color:var(--muted)">🖱 Click any state node to inspect its transitions</span>'; return; }
+  const out = RAW_TRANS.filter(t=>t[0]===selState);
+  const inn = RAW_TRANS.filter(t=>t[1]===selState && t[0]!==selState);
+  const badges = [];
+  if(selState===START) badges.push('<span class="badge badge-start">START</span>');
+  if(FINAL.has(selState)) badges.push('<span class="badge badge-accept">ACCEPT</span>');
+  if(selState===DEAD) badges.push('<span class="badge badge-dead">DEAD</span>');
+  const outStr = out.map(t=>`→ <strong style="color:var(--text)">${t[1]}</strong> <span style="color:var(--muted)">on</span> <code>${t[2]}</code>`).join(' &nbsp; ');
+  const inStr  = inn.length ? inn.map(t=>`<strong style="color:var(--text)">${t[0]}</strong> <span style="color:var(--muted)">on</span> <code>${t[2]}</code>`).join(' &nbsp; ') : '<span style="color:var(--muted)">none</span>';
+  div.innerHTML = `<span style="color:var(--orange);font-weight:700">${selState}</span> ${badges.join(' ')} &emsp; <span style="color:var(--muted)">OUT:</span> ${outStr} &emsp; <span style="color:var(--muted)">IN:</span> ${inStr}`;
+}
+
+// ════════════════════════════════════════════════
+//  PAN / DRAG
+// ════════════════════════════════════════════════
+const scroll = document.getElementById('svg-scroll');
+let dragging=false, startX=0, startY=0, scrollLeft=0, scrollTop=0;
+scroll.addEventListener('mousedown', e=>{
+  if(e.target.closest('.node-g')) return;
+  dragging=true; startX=e.pageX-scroll.offsetLeft; startY=e.pageY-scroll.offsetTop;
+  scrollLeft=scroll.scrollLeft; scrollTop=scroll.scrollTop;
+});
+window.addEventListener('mouseup',()=>dragging=false);
+scroll.addEventListener('mousemove', e=>{
+  if(!dragging) return;
+  e.preventDefault();
+  scroll.scrollLeft = scrollLeft-(e.pageX-scroll.offsetLeft-startX);
+  scroll.scrollTop  = scrollTop -(e.pageY-scroll.offsetTop -startY);
+});
+
+// Init
+renderKeywordPhases();
+buildSVG();
+</script>
+</body>
+</html>
