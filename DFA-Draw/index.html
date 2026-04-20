@@ -440,13 +440,73 @@ const RAW_TRANS = [
   ],
   [
     "q0",
-    "q10",
+    "q11",
     ":"
+  ],
+  [
+    "q0",
+    "q12",
+    "("
+  ],
+  [
+    "q0",
+    "q13",
+    "{"
+  ],
+  [
+    "q0",
+    "q14",
+    "<"
+  ],
+  [
+    "q0",
+    "q19",
+    ";"
+  ],
+  [
+    "q0",
+    "q23",
+    ")"
+  ],
+  [
+    "q0",
+    "q27",
+    "/"
   ],
   [
     "q0",
     "q3",
     "t"
+  ],
+  [
+    "q0",
+    "q31",
+    "Digit"
+  ],
+  [
+    "q0",
+    "q32",
+    "Letter"
+  ],
+  [
+    "q0",
+    "q33",
+    "="
+  ],
+  [
+    "q0",
+    "q35",
+    "+"
+  ],
+  [
+    "q0",
+    "q38",
+    "-"
+  ],
+  [
+    "q0",
+    "q39",
+    "*"
   ],
   [
     "q0",
@@ -470,8 +530,13 @@ const RAW_TRANS = [
   ],
   [
     "q0",
+    "q8",
+    "}"
+  ],
+  [
+    "q0",
     "qd",
-    "(,),*,+,-,/,;,<,=,D,L,S,a,d,f,h,l,n,p,s,{,},Any Characters,Digit,Letter"
+    "D,L,S,a,f,h,n,p"
   ],
   [
     "q1",
@@ -481,7 +546,7 @@ const RAW_TRANS = [
   [
     "q1",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,h,i,n,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q10",
@@ -490,8 +555,13 @@ const RAW_TRANS = [
   ],
   [
     "q11",
+    "q11",
+    "Letter"
+  ],
+  [
+    "q11",
     "qd",
-    "*all"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,n,p,r,t,u,w,{,},Digit"
   ],
   [
     "q12",
@@ -506,7 +576,7 @@ const RAW_TRANS = [
   [
     "q13",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,t,u,w,{,Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,n,p,r,t,u,w,{,Digit,Letter"
   ],
   [
     "q14",
@@ -521,7 +591,7 @@ const RAW_TRANS = [
   [
     "q15",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,f,h,i,n,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q16",
@@ -536,7 +606,7 @@ const RAW_TRANS = [
   [
     "q16",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,a,f,h,i,n,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q17",
@@ -551,7 +621,7 @@ const RAW_TRANS = [
   [
     "q17",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,d,e,f,h,i,l,n,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,e,f,h,i,n,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q18",
@@ -561,7 +631,7 @@ const RAW_TRANS = [
   [
     "q18",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,n,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q19",
@@ -575,13 +645,8 @@ const RAW_TRANS = [
   ],
   [
     "q20",
-    "q20",
-    "Any Characters"
-  ],
-  [
-    "q20",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,t,u,w,{,},Digit,Letter"
+    "*all"
   ],
   [
     "q21",
@@ -591,7 +656,7 @@ const RAW_TRANS = [
   [
     "q21",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q22",
@@ -611,17 +676,17 @@ const RAW_TRANS = [
   [
     "q24",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,f,h,i,n,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q25",
     "q19",
-    "d"
+    "Letter"
   ],
   [
     "q25",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,n,p,r,t,u,w,{,},Digit"
   ],
   [
     "q26",
@@ -631,7 +696,7 @@ const RAW_TRANS = [
   [
     "q26",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,n,p,r,u,w,{,},Digit,Letter"
   ],
   [
     "q27",
@@ -646,7 +711,7 @@ const RAW_TRANS = [
   [
     "q28",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,n,p,r,u,w,{,},Digit,Letter"
   ],
   [
     "q29",
@@ -656,7 +721,7 @@ const RAW_TRANS = [
   [
     "q29",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,n,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q3",
@@ -666,17 +731,17 @@ const RAW_TRANS = [
   [
     "q3",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,i,n,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q30",
     "q14",
-    "l"
+    "Letter"
   ],
   [
     "q30",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,n,p,r,t,u,w,{,},Digit"
   ],
   [
     "q31",
@@ -701,7 +766,7 @@ const RAW_TRANS = [
   [
     "q34",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,d,e,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,e,f,h,i,n,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q35",
@@ -716,7 +781,7 @@ const RAW_TRANS = [
   [
     "q36",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,f,h,i,n,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q37",
@@ -726,7 +791,7 @@ const RAW_TRANS = [
   [
     "q37",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,s,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,n,p,r,u,w,{,},Digit,Letter"
   ],
   [
     "q38",
@@ -740,48 +805,18 @@ const RAW_TRANS = [
   ],
   [
     "q4",
-    "q40",
-    "l"
-  ],
-  [
-    "q4",
-    "q42",
+    "q11",
     "n"
   ],
   [
     "q4",
-    "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
-  ],
-  [
-    "q40",
-    "q41",
-    "s"
-  ],
-  [
-    "q40",
-    "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,r,t,u,w,{,},Any Characters,Digit,Letter"
-  ],
-  [
-    "q41",
     "q9",
-    "e"
+    "Letter"
   ],
   [
-    "q41",
+    "q4",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
-  ],
-  [
-    "q42",
-    "q11",
-    "d"
-  ],
-  [
-    "q42",
-    "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,p,r,t,u,w,{,},Digit"
   ],
   [
     "q5",
@@ -791,7 +826,7 @@ const RAW_TRANS = [
   [
     "q5",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q6",
@@ -801,7 +836,7 @@ const RAW_TRANS = [
   [
     "q6",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,f,h,i,l,n,p,r,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,f,h,i,n,p,r,t,u,w,{,},Digit,Letter"
   ],
   [
     "q7",
@@ -811,7 +846,7 @@ const RAW_TRANS = [
   [
     "q7",
     "qd",
-    "(,),*,+,-,/,:,;,<,=,D,L,S,a,d,e,f,h,i,l,n,p,s,t,u,w,{,},Any Characters,Digit,Letter"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,n,p,t,u,w,{,},Digit,Letter"
   ],
   [
     "q8",
@@ -820,8 +855,13 @@ const RAW_TRANS = [
   ],
   [
     "q9",
+    "q9",
+    "Letter"
+  ],
+  [
+    "q9",
     "qd",
-    "*all"
+    "(,),*,+,-,/,:,;,<,=,D,L,S,a,e,f,h,i,n,p,r,t,u,w,{,},Digit"
   ]
 ];
 const KEYWORD_PHASES = [
@@ -892,16 +932,16 @@ const KEYWORD_PHASES = [
         "ch": "e"
       },
       {
-        "state": "q40",
-        "ch": "l"
-      },
-      {
-        "state": "q41",
-        "ch": "s"
+        "state": "q9",
+        "ch": "Letter"
       },
       {
         "state": "q9",
-        "ch": "e"
+        "ch": "Letter"
+      },
+      {
+        "state": "q9",
+        "ch": "Letter"
       }
     ],
     "last": "q9",
@@ -922,12 +962,12 @@ const KEYWORD_PHASES = [
         "ch": "e"
       },
       {
-        "state": "q42",
+        "state": "q11",
         "ch": "n"
       },
       {
         "state": "q11",
-        "ch": "d"
+        "ch": "Letter"
       }
     ],
     "last": "q11",
@@ -999,7 +1039,7 @@ const KEYWORD_PHASES = [
       },
       {
         "state": "q14",
-        "ch": "l"
+        "ch": "Letter"
       }
     ],
     "last": "q14",
@@ -1029,7 +1069,7 @@ const KEYWORD_PHASES = [
       },
       {
         "state": "q19",
-        "ch": "d"
+        "ch": "Letter"
       }
     ],
     "last": "q19",
@@ -1068,9 +1108,261 @@ const KEYWORD_PHASES = [
     ],
     "last": "q23",
     "missing": null
+  },
+  {
+    "label": "DIGIT",
+    "word": "<digit>",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q31",
+        "ch": "Digit"
+      }
+    ],
+    "last": "q31",
+    "missing": null
+  },
+  {
+    "label": "LETTER",
+    "word": "<letter>",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q32",
+        "ch": "Letter"
+      }
+    ],
+    "last": "q32",
+    "missing": null
+  },
+  {
+    "label": "ASSIGNMENT",
+    "word": "=",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q33",
+        "ch": "="
+      }
+    ],
+    "last": "q33",
+    "missing": null
+  },
+  {
+    "label": "PLUS",
+    "word": "+",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q35",
+        "ch": "+"
+      }
+    ],
+    "last": "q35",
+    "missing": null
+  },
+  {
+    "label": "MINUS",
+    "word": "-",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q38",
+        "ch": "-"
+      }
+    ],
+    "last": "q38",
+    "missing": null
+  },
+  {
+    "label": "MUL",
+    "word": "*",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q39",
+        "ch": "*"
+      }
+    ],
+    "last": "q39",
+    "missing": null
+  },
+  {
+    "label": "DIV",
+    "word": "/",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q27",
+        "ch": "/"
+      }
+    ],
+    "last": "q27",
+    "missing": null
+  },
+  {
+    "label": "LT",
+    "word": "<",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q14",
+        "ch": "<"
+      }
+    ],
+    "last": "q14",
+    "missing": null
+  },
+  {
+    "label": "SEMI",
+    "word": ";",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q19",
+        "ch": ";"
+      }
+    ],
+    "last": "q19",
+    "missing": null
+  },
+  {
+    "label": "COLON",
+    "word": ":",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q11",
+        "ch": ":"
+      }
+    ],
+    "last": "q11",
+    "missing": null
+  },
+  {
+    "label": "LPAREN",
+    "word": "(",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q12",
+        "ch": "("
+      }
+    ],
+    "last": "q12",
+    "missing": null
+  },
+  {
+    "label": "RPAREN",
+    "word": ")",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q23",
+        "ch": ")"
+      }
+    ],
+    "last": "q23",
+    "missing": null
+  },
+  {
+    "label": "LBRACE",
+    "word": "{",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q13",
+        "ch": "{"
+      }
+    ],
+    "last": "q13",
+    "missing": null
+  },
+  {
+    "label": "RBRACE",
+    "word": "}",
+    "pass": true,
+    "reason": "accept",
+    "steps": [
+      {
+        "state": "q0",
+        "ch": null
+      },
+      {
+        "state": "q8",
+        "ch": "}"
+      }
+    ],
+    "last": "q8",
+    "missing": null
   }
 ];
-const UNREACHABLE_FINALS = ["q13", "q27", "q31", "q32", "q33", "q35", "q38", "q39"];
+const UNREACHABLE_FINALS = [];
 
 // ════════════════════════════════════════════════
 //  LAYOUT  (hand-placed; keep in sync with sheet states)
@@ -1092,11 +1384,6 @@ const POS = {
 
   // ── q0 → e → q4 ──
   q4:  [560, 240],
-  // else (q4→l→q40→s→q41→e→q9) / end (q4→n→q42→d→q11)
-  q40: [480, 300],
-  q41: [480, 440],
-  q42: [640, 300],
-
   // ── q0 → : → q10 ──
   q10: [560, 400],
 
